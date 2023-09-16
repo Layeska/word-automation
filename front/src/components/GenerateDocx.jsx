@@ -1,32 +1,31 @@
-import docx from "officegen"
+import React, { Component } from 'react';
+import officegen from 'officegen';
+import fs from 'fs';
 
-const GenerateDocx = () => {
-    // const docx = officegen('docx')
+class GenerateDocx extends Component {
+  generateDocument = () => {
+    // Crea un nuevo documento de Word
+    const docx = officegen('docx');
 
-    const generando = () => {
-        docx.setTitle('Hola este es el titulo')
-        docx.setDescription("bla bla")
-        
-        try {
-            const pObj = docx.createP();
-            pObj.addText('¡Hola, mundo!', { bold: true, underline: true, color: '0000FF' });
-            const stream = docx.generate();
-            stream.pipe(200);
-        } catch(error) {
-            console.log(error)
-        }
+    // Agrega contenido al documento
+    const paragraph = docx.createP();
+    paragraph.addText('¡Hola, mundo!');
 
+    // Guarda el documento en un archivo
+    const stream = docx.generate();
+    stream.pipe(require('fs').createWriteStream('documento.docx'));
 
-    }
+    // Puedes enviar el documento al usuario para descargarlo
+    // window.location.href = 'documento.docx';
+  }
 
-
+  render() {
     return (
-        <>
-        <div>
-            <button onClick={generando}>Generar Documento de Word</button>
-        </div>
-        </>
-    )
+      <div>
+        <button onClick={this.generateDocument}>Generar Documento</button>
+      </div>
+    );
+  }
 }
 
-export default GenerateDocx
+export default GenerateDocx;
